@@ -1,9 +1,9 @@
 # swcraig
 
-require 'Dictionary'
-require 'Word'
+require 'dictionary'
+require 'entry'
 
-Shoes.app :width => 700, :height => 440, :resizable => false do
+Shoes.app :width => 700, :height => 640 do
 
   dict = Dictionary.new
 
