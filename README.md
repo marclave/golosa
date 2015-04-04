@@ -3,7 +3,9 @@ Golosa is an open-source Ruby [Shoes](http://shoesrb.com/) application, designed
 
 
 ## Getting Started
-How am I going to "deploy" this?
 
+
+## Usage Information
+Curtis Matthias 2015
 
 ## License

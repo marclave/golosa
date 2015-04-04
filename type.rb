@@ -1,15 +1,15 @@
 class Type
   attr_reader :type
 
-  @@modes = {"Word" => "words.txt",
-    "Verb" => "verbs.txt",
-    "Colloquial" => "colloquials.txt",
-    "Note" => "notes.txt"}
-
-  # is passed a symbol
-  def initialize(mode)
+  def initialize(mode, dictionary)
     @type = mode
-    @filename = @@modes[mode]
+    @dictionary = dictionary
+    # Should I make this is a constant? There are too many strings...
+    @modes = {"Word" => "words.txt", "Verb" => "verbs.txt",
+      "Colloquial" => "colloquials.txt", "Note" => "notes.txt"}
+    # Append the language name to the mode, so each language has distinct files
+    @modes.each{|key, val| @modes[key] = @dictionary.language + val}
+    @filename = @modes[@type]
     @hasFile = File.exist?(@filename)
   end
 
@@ -27,7 +27,5 @@ class Type
   def addEntry(entry)
     File.open(@filename, "a+") {|f| f.write(entry.to_file)}
   end
-
-
 
 end

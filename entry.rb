@@ -1,5 +1,4 @@
 # Class for Word, Verb, Colloquial types
-
 require 'support'
 
 class Entry < Type
