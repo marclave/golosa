@@ -1,17 +1,19 @@
 # The class responsible for all loading/everything that is remotely useful
 
-#require 'yaml'
+require 'yaml'
 require 'type'
 
 class Dictionary
   attr_accessor :language
   attr_reader :words
+  attr_reader :languages
   # Don't need an accessor for mode because I am making a method?
 
   # Default mode is "Word"
   def initialize
     @language = "russian"
-    #@configs = YAML.load(File.read("config.yml"))
+    # languages is an array
+    @languages = File.open("config.yml") {|f| YAML.load(f)['languages']}
     @mode = Type.new("Word", self)
   end
 

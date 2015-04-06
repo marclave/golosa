@@ -1,2 +1,3 @@
-Word: words.txt
-Verb: verbs.txt
+languages:
+  - russian
+  - french
