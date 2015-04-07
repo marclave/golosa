@@ -9,17 +9,13 @@ Shoes.app :width => 700, :height => 640, :title => "Golosa" do
 
   # Displays title, different modes, and languages
   @leftPanel = stack :margin => 8, :width => "33%" do
-    title(dict.language)
-    # TODO - Make this an .each loop
-    para (link("Words").click do
-      @wordStack.clear() {dict.mode = "Word"; para dict.getEntries}
-    end)
-    para (link("Verbs").click do
-      @wordStack.clear() {dict.mode = "Verb"; para dict.getEntries}
-    end)
-    para (link("Colloquials").click do
-      @wordStack.clear() {dict.mode = "Colloquial"; para dict.getEntries}
-    end)
+    @title = title(dict.language)
+
+    ["Word", "Verb", "Colloquial"].each do |t|
+      para (link(t).click do
+        @wordStack.clear() {dict.mode = t; para dict.getEntries}
+      end)
+    end
 
     @languages = stack :displace_top => 370 do
       tongues = list_box items: dict.languages + "New...".split()
@@ -30,13 +26,14 @@ Shoes.app :width => 700, :height => 640, :title => "Golosa" do
           alert("Creating a new language")
         end
       end
-      # TODO - this is ugly and needs fixing
-      # Need to update all the stacks and blocks
+      # Handle changing the dictionary language
       tongues.change() do |lang|
         if lang.text == "New..."
           @languageField.toggle
         elsif lang.text != dict.language
           dict.language = lang.text
+          @wordStack.clear() {para dict.getEntries}
+          @title.text = dict.language
         else
           @languageField.toggle
         end
@@ -49,7 +46,7 @@ Shoes.app :width => 700, :height => 640, :title => "Golosa" do
     para dict.getEntries
   end
 
-  # Add more entries
+  # Add/Delete entries
   @addWord = stack :width => "33%" do
     border black
     translation = edit_line
@@ -72,20 +69,17 @@ end
 
 
 # TODO
-# => Figure out why the wordStack needs to be cleared
 # => Add delete functionality
 # => Make an "Add note" button? How would you view them?
-# => Better method of changing dictionary modes
 # => Make two columns for the words
+# => Highlight which mode we are currently using
 
 # ISSUES
 # => Should be allowed to maximize but not resize
 # => There are too many strings hardcoded everywhere!
-# => If there are no text files, the first time this is run it won't work
-# =>    I need to call getList directly after
-# => Entry is put into wrong file immediately after a language change
 
 # LESSONS
 # => cannot access class variables with mixins
 # => cannot create class methods in mixins
 # => Prior two points both make sense...
+# => title behaves like an edit_line

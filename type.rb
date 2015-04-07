@@ -20,7 +20,8 @@ class Type
     else
       File.new(@filename, "w")
       @hasFile = true
-      Array.empty
+      # HACK
+      ""
     end
   end
 

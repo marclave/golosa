@@ -4,17 +4,22 @@ require 'yaml'
 require 'type'
 
 class Dictionary
-  attr_accessor :language
+  attr_reader :language
   attr_reader :words
   attr_reader :languages
   # Don't need an accessor for mode because I am making a method?
 
   # Default mode is "Word"
-  def initialize
-    @language = "russian"
+  def initialize(language = "russian")
+    @language = language
     # languages is an array
     @languages = File.open("config.yml") {|f| YAML.load(f)['languages']}
     @mode = Type.new("Word", self)
+  end
+
+  def language= newLang
+    @language = newLang
+    @mode = Type.new(@mode.type, self)
   end
 
   def mode= newMode
