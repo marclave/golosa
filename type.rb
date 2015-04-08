@@ -29,4 +29,13 @@ class Type
     File.open(@filename, "a+") {|f| f.write(entry.to_file)}
   end
 
+  def delete(toDelete)
+    newLines = ""
+    getList.map do |line|
+      next if line.split(" ")[0] == toDelete
+      newLines += line.split(" ")[0] + ":" + line.split(" ")[1] + "\n"
+    end
+    File.open(@filename, "w") {|f| f.write(newLines)}
+  end
+
 end

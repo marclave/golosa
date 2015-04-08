@@ -60,7 +60,9 @@ Shoes.app :width => 700, :height => 640, :title => "Golosa" do
         end
       end
       button "Delete" do
-        alert("Feature not implemented")
+        dict.deleteEntry(translation.text)
+        translation.text, english.text = ""
+        @wordStack.clear() {para dict.getEntries}
       end
     end
   end
@@ -69,14 +71,20 @@ end
 
 
 # TODO
-# => Add delete functionality
 # => Make an "Add note" button? How would you view them?
 # => Make two columns for the words
 # => Highlight which mode we are currently using
+# => Make function for "eng:tran"
+# => Add and delete, redundant code
 
 # ISSUES
 # => Should be allowed to maximize but not resize
 # => There are too many strings hardcoded everywhere!
+
+# CODE SMELLS
+# => delete in type.rb
+# => changing dictionary languages in personal.rb
+
 
 # LESSONS
 # => cannot access class variables with mixins

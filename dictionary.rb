@@ -30,6 +30,10 @@ class Dictionary
     @mode.getList
   end
 
+  def deleteEntry(entry)
+    @mode.delete(entry)
+  end
+
   # Calls constructor for the type of entry (Word or Verb)
   # Then calls the insert method on that specific class
   def addEntry(translation, english)
