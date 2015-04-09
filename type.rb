@@ -13,16 +13,17 @@ class Type
     @hasFile = File.exist?(@filename)
   end
 
+  # Returns a hash, easier to split up into columns
   def getList
+    entries = {}
     if @hasFile
       File.foreach(@filename).sort
-        .collect{|x| a = x.split(":"); a[0] + " " + a[1]}
+        .collect{|x| a = x.split(":"); entries[a[0]+"\n"] = a[1]}
     else
       File.new(@filename, "w")
       @hasFile = true
-      # HACK
-      ""
     end
+    entries
   end
 
   def addEntry(entry)
@@ -31,9 +32,9 @@ class Type
 
   def delete(toDelete)
     newLines = ""
-    getList.map do |line|
-      next if line.split(" ")[0] == toDelete
-      newLines += line.split(" ")[0] + ":" + line.split(" ")[1] + "\n"
+    getList.each do |key, val|
+      next if key.strip == toDelete  # Key has a newline part of it!!
+      newLines += key.strip + ":" + val
     end
     File.open(@filename, "w") {|f| f.write(newLines)}
   end

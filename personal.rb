@@ -3,6 +3,7 @@
 require 'dictionary'
 require 'entry'
 
+
 Shoes.app :width => 700, :height => 640, :title => "Golosa" do
 
   dict = Dictionary.new
@@ -13,7 +14,9 @@ Shoes.app :width => 700, :height => 640, :title => "Golosa" do
 
     ["Word", "Verb", "Colloquial"].each do |t|
       para (link(t).click do
-        @wordStack.clear() {dict.mode = t; para dict.getEntries}
+        dict.mode = t
+        @wordStack.clear() {para dict.getEntries.keys}
+        @translationStack.clear() {para dict.getEntries.values}
       end)
     end
 
@@ -32,7 +35,8 @@ Shoes.app :width => 700, :height => 640, :title => "Golosa" do
           @languageField.toggle
         elsif lang.text != dict.language
           dict.language = lang.text
-          @wordStack.clear() {para dict.getEntries}
+          @wordStack.clear() {para dict.getEntries.keys}
+          @translationStack.clear() {para dict.getEntries.values}
           @title.text = dict.language
         else
           @languageField.toggle
@@ -42,8 +46,13 @@ Shoes.app :width => 700, :height => 640, :title => "Golosa" do
   end
 
   # List of all the entries
-  @wordStack = stack :width => "33%", :height => "100%", :scroll => true do
-    para dict.getEntries
+  flow :width => "33%", :height => "100%", :scroll => true do
+    @wordStack = stack :width => "50%" do
+      para dict.getEntries.keys
+    end
+    @translationStack = stack :width => "50%" do
+      para dict.getEntries.values
+    end
   end
 
   # Add/Delete entries
@@ -56,13 +65,15 @@ Shoes.app :width => 700, :height => 640, :title => "Golosa" do
         if (!translation.text.empty? && !english.text.empty?)
           dict.addEntry(translation.text, english.text)
           translation.text, english.text = ""
-          @wordStack.clear() {para dict.getEntries}
+          @wordStack.clear() {para dict.getEntries.keys}
+          @translationStack.clear() {para dict.getEntries.values}
         end
       end
       button "Delete" do
         dict.deleteEntry(translation.text)
-        translation.text, english.text = ""
-        @wordStack.clear() {para dict.getEntries}
+        translation.text, english.text =  ""
+        @wordStack.clear() {para dict.getEntries.keys}
+        @translationStack.clear() {para dict.getEntries.values}
       end
     end
   end
@@ -72,7 +83,6 @@ end
 
 # TODO
 # => Make an "Add note" button? How would you view them?
-# => Make two columns for the words
 # => Highlight which mode we are currently using
 # => Make function for "eng:tran"
 # => Add and delete, redundant code
@@ -80,14 +90,16 @@ end
 # ISSUES
 # => Should be allowed to maximize but not resize
 # => There are too many strings hardcoded everywhere!
+# => There are "\n" on some key values
 
 # CODE SMELLS
 # => delete in type.rb
 # => changing dictionary languages in personal.rb
-
+# => Loading the word/trans stacks redundant
 
 # LESSONS
 # => cannot access class variables with mixins
 # => cannot create class methods in mixins
 # => Prior two points both make sense...
 # => title behaves like an edit_line
+# => Can't start variable with number
