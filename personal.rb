@@ -7,6 +7,7 @@ require 'entry'
 Shoes.app :width => 700, :height => 640, :title => "Golosa" do
 
   dict = Dictionary.new
+  soraka = Soraka.new
 
   # Displays title, different modes, and languages
   @leftPanel = stack :margin => 8, :width => "33%" do
@@ -15,8 +16,7 @@ Shoes.app :width => 700, :height => 640, :title => "Golosa" do
     ["Word", "Verb", "Colloquial"].each do |t|
       para (link(t).click do
         dict.mode = t
-        @wordStack.clear() {para dict.getEntries.keys}
-        @translationStack.clear() {para dict.getEntries.values}
+        soraka.reload(dict, @wordStack, @translationStack)
       end)
     end
 
@@ -29,14 +29,12 @@ Shoes.app :width => 700, :height => 640, :title => "Golosa" do
           alert("Creating a new language")
         end
       end
-      # Handle changing the dictionary language
       tongues.change() do |lang|
         if lang.text == "New..."
           @languageField.toggle
         elsif lang.text != dict.language
           dict.language = lang.text
-          @wordStack.clear() {para dict.getEntries.keys}
-          @translationStack.clear() {para dict.getEntries.values}
+          soraka.reload(dict, @wordStack, @translationStack)
           @title.text = dict.language
         else
           @languageField.toggle
@@ -64,20 +62,32 @@ Shoes.app :width => 700, :height => 640, :title => "Golosa" do
       button "Add" do
         if (!translation.text.empty? && !english.text.empty?)
           dict.addEntry(translation.text, english.text)
-          translation.text, english.text = ""
-          @wordStack.clear() {para dict.getEntries.keys}
-          @translationStack.clear() {para dict.getEntries.values}
+          soraka.reload(dict, @wordStack, @translationStack, [translation, english])
         end
       end
       button "Delete" do
         dict.deleteEntry(translation.text)
-        translation.text, english.text =  ""
-        @wordStack.clear() {para dict.getEntries.keys}
-        @translationStack.clear() {para dict.getEntries.values}
+        soraka.reload(dict, @wordStack, @translationStack, [translation, english])
       end
     end
   end
 
+end
+
+# Support class for handling code redundancies
+class Soraka
+  def reload(dict, eng, trans, opts = nil)
+    eng.app do
+      eng.clear() {para dict.getEntries.keys}
+    end
+    trans.app do
+      trans.clear() {para dict.getEntries.values}
+    end
+    # Clear out the edit_lines
+    opts.each do |x|
+      x.app { x.text = ""}
+    end
+  end
 end
 
 
@@ -85,7 +95,8 @@ end
 # => Make an "Add note" button? How would you view them?
 # => Highlight which mode we are currently using
 # => Make function for "eng:tran"
-# => Add and delete, redundant code
+# => Put Soraka class in seperate file?
+# => Disallow duplicate entries
 
 # ISSUES
 # => Should be allowed to maximize but not resize
@@ -95,11 +106,9 @@ end
 # CODE SMELLS
 # => delete in type.rb
 # => changing dictionary languages in personal.rb
-# => Loading the word/trans stacks redundant
 
 # LESSONS
 # => cannot access class variables with mixins
 # => cannot create class methods in mixins
-# => Prior two points both make sense...
 # => title behaves like an edit_line
 # => Can't start variable with number
