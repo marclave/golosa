@@ -26,8 +26,12 @@ class Dictionary
     @mode = Type.new(newMode, self)
   end
 
-  def getEntries
-    @mode.getList
+  def getWords
+    @mode.getList.keys
+  end
+
+  def getTranslations
+    @mode.getList.values
   end
 
   def deleteEntry(entry)

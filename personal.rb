@@ -1,5 +1,6 @@
 # swcraig
 
+require 'soraka'
 require 'dictionary'
 require 'entry'
 
@@ -13,12 +14,25 @@ Shoes.app :width => 700, :height => 640, :title => "Golosa" do
   @leftPanel = stack :margin => 8, :width => "33%" do
     @title = title(dict.language)
 
-    ["Word", "Verb", "Colloquial"].each do |t|
-      para (link(t).click do
-        dict.mode = t
-        soraka.reload(dict, @wordStack, @translationStack)
-      end)
-    end
+    @word = para (link("Word").click do
+      soraka.changeType(@word, [@verb,@colloquial])
+      dict.mode = "Word"
+      soraka.reload(dict, @wordStack, @translationStack)
+    end)
+    # Word is the default type
+    @word.emphasis = "oblique"
+
+    @verb = para (link("Verb").click do
+      soraka.changeType(@verb, [@word,@colloquial])
+      dict.mode = "Verb"
+      soraka.reload(dict, @wordStack, @translationStack)
+    end)
+
+    @colloquial = para (link("Colloquial").click do
+      soraka.changeType(@colloquial, [@word,@verb])
+      dict.mode = "Colloquial"
+      soraka.reload(dict, @wordStack, @translationStack)
+    end)
 
     @languages = stack :displace_top => 370 do
       tongues = list_box items: dict.languages + "New...".split()
@@ -46,10 +60,10 @@ Shoes.app :width => 700, :height => 640, :title => "Golosa" do
   # List of all the entries
   flow :width => "33%", :height => "100%", :scroll => true do
     @wordStack = stack :width => "50%" do
-      para dict.getEntries.keys
+      para dict.getWords
     end
     @translationStack = stack :width => "50%" do
-      para dict.getEntries.values
+      para dict.getTranslations
     end
   end
 
@@ -74,28 +88,10 @@ Shoes.app :width => 700, :height => 640, :title => "Golosa" do
 
 end
 
-# Support class for handling code redundancies
-class Soraka
-  def reload(dict, eng, trans, opts = nil)
-    eng.app do
-      eng.clear() {para dict.getEntries.keys}
-    end
-    trans.app do
-      trans.clear() {para dict.getEntries.values}
-    end
-    # Clear out the edit_lines
-    opts.each do |x|
-      x.app { x.text = ""}
-    end
-  end
-end
-
 
 # TODO
 # => Make an "Add note" button? How would you view them?
-# => Highlight which mode we are currently using
 # => Make function for "eng:tran"
-# => Put Soraka class in seperate file?
 # => Disallow duplicate entries
 
 # ISSUES

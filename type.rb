@@ -40,3 +40,5 @@ class Type
   end
 
 end
+
+# Should this possibly have two instance variables keys and values?
