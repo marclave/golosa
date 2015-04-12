@@ -1,9 +1,8 @@
 # swcraig
 
-require 'soraka'
 require 'dictionary'
+require 'soraka'
 require 'entry'
-
 
 Shoes.app :width => 700, :height => 640, :title => "Golosa" do
 
@@ -38,20 +37,29 @@ Shoes.app :width => 700, :height => 640, :title => "Golosa" do
       tongues = list_box items: dict.languages + "New...".split()
       tongues.choose(dict.language)
       @languageField = flow do
-        edit_line.text = "Enter a new language"
+        newLang = edit_line
+        newLang.text = "Enter a new language"
         button 'Create' do
-          alert("Creating a new language")
+          dict.addLanguage(newLang.text)
+          dict.language = newLang.text
+          newLang.text = ""
+          soraka.reload(dict, @wordStack, @translationStack)
+          @title.text = dict.language
+          tongues.items = dict.languages + "New...".split()
+          # HACK - dict.language is "" at this point...?
+          tongues.choose(@title.text)
         end
       end
       tongues.change() do |lang|
         if lang.text == "New..."
-          @languageField.toggle
+          @languageField.show
         elsif lang.text != dict.language
           dict.language = lang.text
           soraka.reload(dict, @wordStack, @translationStack)
           @title.text = dict.language
+          @languageField.hide
         else
-          @languageField.toggle
+          @languageField.hide
         end
       end
     end
@@ -102,6 +110,7 @@ end
 # CODE SMELLS
 # => delete in type.rb
 # => changing dictionary languages in personal.rb
+# => change language in addLanguage...
 
 # LESSONS
 # => cannot access class variables with mixins

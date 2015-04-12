@@ -2,6 +2,7 @@
 
 require 'yaml'
 require 'type'
+require 'json'
 
 class Dictionary
   attr_reader :language
@@ -13,13 +14,19 @@ class Dictionary
   def initialize(language = "russian")
     @language = language
     # languages is an array
-    @languages = File.open("config.yml") {|f| YAML.load(f)['languages']}
+    @languages = File.open("config.yml") { |f| YAML.load(f)['languages'] }
     @mode = Type.new("Word", self)
   end
 
   def language= newLang
     @language = newLang
     @mode = Type.new(@mode.type, self)
+  end
+
+  def addLanguage newLang
+    File.open("config.yml", "w") do |f|
+      f.write({"languages" => @languages.push(newLang)}.to_json)
+    end
   end
 
   def mode= newMode
