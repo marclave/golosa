@@ -18,23 +18,26 @@ class Dictionary
     @mode = Type.new("Word", self)
   end
 
-  def language= newLang
+  def language=(newLang)
     @language = newLang
     @mode = Type.new(@mode.type, self)
   end
 
-  def addLanguage newLang
+  # Also changes the dictionary language
+  def addLanguage(newLang)
     File.open("config.yml", "w") do |f|
       f.write({"languages" => @languages.push(newLang)}.to_json)
     end
+    @language = newLang
   end
 
-  def mode= newMode
+  def mode=(newMode)
     @mode = Type.new(newMode, self)
   end
 
+  # keys is actually never changed
   def getWords
-    @mode.getList.keys
+    @mode.getList.keys.map { |x| "#{x}\n" }
   end
 
   def getTranslations

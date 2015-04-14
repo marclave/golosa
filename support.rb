@@ -1,5 +1,4 @@
 # Implemented by Word, Verb, and Colloquial Types
-# This might not be needed
 
 module Format
 

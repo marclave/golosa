@@ -1,12 +1,13 @@
 # Support class for handling code redundancies in personal.rb
 
 class Soraka
+
   def reload(dict, eng, trans, opts = nil)
     eng.app do
-      eng.clear() { para dict.getWords }
+      eng.clear { para dict.getWords }
     end
     trans.app do
-      trans.clear() { para dict.getTranslations }
+      trans.clear { para dict.getTranslations }
     end
     # Clear out the edit_lines
     if opts

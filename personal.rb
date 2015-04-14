@@ -13,12 +13,12 @@ Shoes.app :width => 700, :height => 640, :title => "Golosa" do
   @leftPanel = stack :margin => 8, :width => "33%" do
     @title = title(dict.language)
 
+    # Word is the default type
     @word = para (link("Word").click do
       soraka.changeType(@word, [@verb,@colloquial])
       dict.mode = "Word"
       soraka.reload(dict, @wordStack, @translationStack)
     end)
-    # Word is the default type
     @word.emphasis = "oblique"
 
     @verb = para (link("Verb").click do
@@ -34,23 +34,19 @@ Shoes.app :width => 700, :height => 640, :title => "Golosa" do
     end)
 
     @languages = stack :displace_top => 370 do
-      tongues = list_box items: dict.languages + "New...".split()
+      tongues = list_box items: dict.languages + "New...".split
       tongues.choose(dict.language)
       @languageField = flow do
-        newLang = edit_line
-        newLang.text = "Enter a new language"
+        newLang = edit_line text: "Enter a new language"
         button 'Create' do
           dict.addLanguage(newLang.text)
-          dict.language = newLang.text
-          newLang.text = ""
-          soraka.reload(dict, @wordStack, @translationStack)
           @title.text = dict.language
-          tongues.items = dict.languages + "New...".split()
-          # HACK - dict.language is "" at this point...?
+          tongues.items = dict.languages + "New...".split
           tongues.choose(@title.text)
+          soraka.reload(dict, @wordStack, @translationStack, [newLang])
         end
       end
-      tongues.change() do |lang|
+      tongues.change do |lang|
         if lang.text == "New..."
           @languageField.show
         elsif lang.text != dict.language
@@ -96,7 +92,6 @@ Shoes.app :width => 700, :height => 640, :title => "Golosa" do
 
 end
 
-
 # TODO
 # => Make an "Add note" button? How would you view them?
 # => Make function for "eng:tran"
@@ -109,11 +104,3 @@ end
 
 # CODE SMELLS
 # => delete in type.rb
-# => changing dictionary languages in personal.rb
-# => change language in addLanguage...
-
-# LESSONS
-# => cannot access class variables with mixins
-# => cannot create class methods in mixins
-# => title behaves like an edit_line
-# => Can't start variable with number

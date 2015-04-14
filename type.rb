@@ -18,7 +18,7 @@ class Type
     entries = {}
     if @hasFile
       File.foreach(@filename).sort
-        .collect{|x| a = x.split(":"); entries[a[0]+"\n"] = a[1]}
+        .collect{|x| a = x.split(":"); entries[a[0]] = a[1]}
     else
       File.new(@filename, "w")
       @hasFile = true
@@ -33,13 +33,10 @@ class Type
   def delete(toDelete)
     newLines = ""
     getList.each do |key, val|
-      next if key.strip == toDelete  # Key has a newline part of it!!
-      newLines += key.strip + ":" + val
+      next if key == toDelete
+      newLines += "#{key}:#{val}"
     end
     File.open(@filename, "w") {|f| f.write(newLines)}
   end
 
 end
-
-# Should this possibly have two instance variables keys and values?
-# Why doesn't this inherit Dictionary?
