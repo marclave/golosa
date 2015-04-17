@@ -15,24 +15,25 @@ class Dictionary
     @language = language
     # languages is an array
     @languages = File.open("config.yml") { |f| YAML.load(f)['languages'] }
-    @mode = Type.new("Word", self)
+    @path = File.open("config.yml") { |f| YAML.load(f)['path'] }
+    @mode = Type.new("Word", self, @path)
   end
 
   def language=(newLang)
     @language = newLang
-    @mode = Type.new(@mode.type, self)
+    @mode = Type.new(@mode.type, self, @path)
   end
 
   # Also changes the dictionary language
   def addLanguage(newLang)
     File.open("config.yml", "w") do |f|
-      f.write({"languages" => @languages.push(newLang)}.to_json)
+      f.write({"languages" => @languages.push(newLang), "path" => @path}.to_json)
     end
     @language = newLang
   end
 
   def mode=(newMode)
-    @mode = Type.new(newMode, self)
+    @mode = Type.new(newMode, self, @path)
   end
 
   # keys is actually never changed

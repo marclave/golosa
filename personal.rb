@@ -104,3 +104,4 @@ end
 
 # CODE SMELLS
 # => delete in type.rb
+# => init in type (@path)

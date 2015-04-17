@@ -1,14 +1,16 @@
 class Type
   attr_reader :type
 
-  def initialize(mode, dictionary)
+  def initialize(mode, dictionary, path)
     @type = mode
     @dictionary = dictionary
+    @path = path
     # Should I make this is a constant? There are too many strings...
     @modes = {"Word" => "words.txt", "Verb" => "verbs.txt",
       "Colloquial" => "colloquials.txt", "Note" => "notes.txt"}
+    @dir = Dir.mkdir(@path) if !Dir.exist?(@path)
     # Append the language name to the mode, so each language has distinct files
-    @modes.each{|key, val| @modes[key] = @dictionary.language + val}
+    @modes.each{|key, val| @modes[key] = @path + "\\" + @dictionary.language + val}
     @filename = @modes[@type]
     @hasFile = File.exist?(@filename)
   end
