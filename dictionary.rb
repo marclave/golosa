@@ -8,14 +8,13 @@ class Dictionary
   attr_reader :language
   attr_reader :words
   attr_reader :languages
-  # Don't need an accessor for mode because I am making a method?
 
   # Default mode is "Word"
   def initialize(language = "russian")
     @language = language
     # languages is an array
-    @languages = File.open("config.yml") { |f| YAML.load(f)['languages'] }
     @path = File.open("config.yml") { |f| YAML.load(f)['path'] }
+    @languages = File.open(@path + "\\config.yml") { |f| YAML.load(f)['languages'] }
     @mode = Type.new("Word", self, @path)
   end
 
@@ -26,7 +25,7 @@ class Dictionary
 
   # Also changes the dictionary language
   def addLanguage(newLang)
-    File.open("config.yml", "w") do |f|
+    File.open(@path + "\\config.yml", "w") do |f|
       f.write({"languages" => @languages.push(newLang), "path" => @path}.to_json)
     end
     @language = newLang
