@@ -1,8 +1,8 @@
 # swcraig
 
-require 'dictionary'
-require 'soraka'
-require 'entry'
+require 'lib/dictionary'
+require 'lib/soraka'
+require 'lib/entry'
 
 Shoes.app :width => 700, :height => 640, :title => "Golosa" do
 
@@ -101,6 +101,7 @@ end
 # => Should be allowed to maximize but not resize
 # => There are too many strings hardcoded everywhere!
 # => There are "\n" on some key values
+# => Not a huge fan of the require statements
 
 # CODE SMELLS
 # => delete in type.rb
