@@ -2,7 +2,7 @@
 
 require 'json'
 require 'yaml'
-require 'lib/type'
+require 'src/type'
 
 class Dictionary
   attr_reader :language

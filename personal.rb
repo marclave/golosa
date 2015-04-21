@@ -1,8 +1,8 @@
 # swcraig
 
-require 'lib/dictionary'
-require 'lib/soraka'
-require 'lib/entry'
+require 'src/dictionary'
+require 'src/soraka'
+require 'src/entry'
 
 Shoes.app :width => 700, :height => 640, :title => "Golosa" do
 

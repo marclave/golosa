@@ -1,5 +1,5 @@
 # Class for Word, Verb, Colloquial types
-require 'lib/support'
+require 'src/support'
 
 class Entry < Type
   include Format
