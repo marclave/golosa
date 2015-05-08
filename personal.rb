@@ -4,7 +4,7 @@ require 'src/dictionary'
 require 'src/soraka'
 require 'src/entry'
 
-Shoes.app :width => 700, :height => 640, :title => "Golosa" do
+Shoes.app :width => 1000, :height => 640, :title => "Golosa" do
 
   dict = Dictionary.new
   soraka = Soraka.new
