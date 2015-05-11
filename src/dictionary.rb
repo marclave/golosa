@@ -9,10 +9,12 @@ class Dictionary
   attr_reader :words
   attr_reader :languages
 
+  @@configPath = Dir.home + "/Golosa/config.yml"
+
   # Default mode is "Word"
   def initialize
-    @path = File.open("C:/Users/Sebastian/Golosa/config.yml") { |f| YAML.load(f)['path'] }
-    @languages = File.open("C:/Users/Sebastian/Golosa/config.yml") { |f| YAML.load(f)['languages'] }
+    @path = File.open(@@configPath) { |f| YAML.load(f)['path'] }
+    @languages = File.open(@@configPath) { |f| YAML.load(f)['languages'] }
     @language = languages[0]
     @mode = Type.new("Word", self, @path)
   end
@@ -24,7 +26,7 @@ class Dictionary
 
   # Also changes the dictionary language
   def addLanguage(newLang)
-    File.open(@path + "/config.yml", "w") do |f|
+    File.open(@@configPath, "w") do |f|
       f.write({"languages" => @languages.push(newLang), "path" => @path}.to_json)
     end
     @language = newLang
