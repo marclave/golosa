@@ -4,7 +4,7 @@ require 'src/dictionary'
 require 'src/soraka'
 require 'src/entry'
 
-Shoes.app :width => 1000, :height => 640, :title => "Golosa" do
+Shoes.app :width => 1200, :height => 640, :title => "Golosa" do
 
   dict = Dictionary.new
   soraka = Soraka.new
@@ -32,6 +32,10 @@ Shoes.app :width => 1000, :height => 640, :title => "Golosa" do
       dict.mode = "Colloquial"
       soraka.reload(dict, @wordStack, @translationStack)
     end)
+
+    @sort = button "Sort by #{dict.language}" do
+      soraka.reload(dict, @wordStack, @translationStack)
+    end
 
     @languages = stack :displace_top => 370 do
       tongues = list_box items: dict.languages + "New...".split
