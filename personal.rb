@@ -33,9 +33,9 @@ Shoes.app :width => 1200, :height => 640, :title => "Golosa" do
       soraka.reload(dict, @wordStack, @translationStack)
     end)
 
-    @sort = button "Sort by #{dict.language}" do
-      soraka.reload(dict, @wordStack, @translationStack)
-    end
+    # Sorts by language
+    flow { @sort = check; para "Sort by #{dict.language}" }
+    @sort.click { |x| dict.toggleSort; soraka.reload(dict, @wordStack, @translationStack)}
 
     @languages = stack :displace_top => 370 do
       tongues = list_box items: dict.languages + "New...".split
