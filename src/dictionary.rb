@@ -10,8 +10,6 @@ class Dictionary
   attr_reader :languages
   attr_reader :sortedLang
 
-  attr_reader :bool
-
   @@configPath = Dir.home + "/Golosa/config.yml"
 
   # Default mode is "Word"
@@ -23,13 +21,8 @@ class Dictionary
     @sortByEng = true
   end
 
-  # TODO This can be prettier!
   def toggleSort
-    if @sortByEng
-      @sortByEng = false
-    else
-      @sortByEng = true
-    end
+    @sortByEng ? @sortByEng = false : @sortByEng = true
   end
 
   def language=(newLang)
@@ -51,28 +44,19 @@ class Dictionary
 
   # keys is actually never changed
   def getWords
-    h = @mode.getList.keys
+    words = @mode.getList.keys
     if !@sortByEng
-      #d = h.sort! { |k, v| h[v] <=> h[k] }
-      #h.sort! { |k, v| h[v] <=> h[k] }
+      words = []
       rus = getTranslations
-      final = []
       match = @mode.getList
       # for each russian word, get coresponding english
-      rus.each { |r| final.push(match.key(r)) }
-
-      final.map { |x| "#{x}\n"}
-    else
-      h.map { |x| "#{x}\n" }
+      rus.each { |r| words.push(match.key(r)) }
     end
+    words.map { |x| "#{x}\n"}
   end
 
   def getTranslations
-    if !@sortByEng
-      @mode.getList.values.sort
-    else
-      @mode.getList.values
-    end
+    !@sortByEng ? @mode.getList.values.sort : @mode.getList.values
   end
 
   def deleteEntry(entry)
