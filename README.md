@@ -10,3 +10,6 @@ Second, Run these three commands in order
     > git clone https://github.com/swcraig/golosa
     > rake install
     > shoes personal.rb
+
+
+<sub>Development was done with Shoes 3.2.21</sub>
