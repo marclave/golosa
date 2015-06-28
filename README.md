@@ -10,6 +10,7 @@ Golosa is a Ruby [Shoes](http://shoesrb.com/) application, designed for language
 3. Run these commands in order
 
 
+
     > git clone https://github.com/swcraig/golosa
     > rake install
     > shoes personal.rb
