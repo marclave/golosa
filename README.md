@@ -3,9 +3,12 @@ Golosa is a Ruby [Shoes](http://shoesrb.com/) application, designed for language
 
 ## Getting Started
 
-First, [download](http://shoesrb.com/downloads/) Shoes
+1. [Download Shoes](http://shoesrb.com/downloads/)
 
-Second, Run these three commands in order
+2. Via the command line, navigate to the directory that you would like to build Golosa
+
+3. Run these commands in order
+
 
     > git clone https://github.com/swcraig/golosa
     > rake install
