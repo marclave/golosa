@@ -76,30 +76,36 @@ Shoes.app :width => 1200, :height => 640, :title => "Golosa" do
   end
 
   # Add/Delete entries
-  @addWord = stack :width => "33%" do
-    border black
-    translation = edit_line
-    english = edit_line
-    flow do
-      button "Add" do
+  @addWord = stack :width => "25%" do
+    #border black
+    translation = edit_line :displace_left => 90
+    english = edit_line :displace_left => 90, :displace_top => 5
+    flow :displace_top => 8 do
+      button "Add", :displace_left => 120 do
         if (!translation.text.empty? && !english.text.empty?)
           dict.addEntry(translation.text, english.text)
           soraka.reload(dict, @wordStack, @translationStack, [translation, english])
         end
       end
-      button "Delete" do
+      button "Delete", :displace_left => 120 do
         dict.deleteEntry(translation.text)
         soraka.reload(dict, @wordStack, @translationStack, [translation, english])
       end
     end
   end
 
+  # This is kind of ugly
+  @legend = stack :width => "5%" do
+    para "english"
+    para "translation"
+  end
+
 end
 
 # TODO
-# => Make an "Add note" button? How would you view them?
-# => Make function for "eng:tran"
 # => Disallow duplicate entries
+# => Clean up the styling!
+# => Make an "Add note" button? How would you view them?
 
 # ISSUES
 # => Should be allowed to maximize but not resize
@@ -108,5 +114,4 @@ end
 # => Not a huge fan of the require statements
 
 # CODE SMELLS
-# => delete in type.rb
 # => init in type (@path)
