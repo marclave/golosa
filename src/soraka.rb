@@ -2,12 +2,16 @@
 
 class Soraka
 
-  def reload(dict, eng, trans, opts = nil)
+  def reload(dict, eng, trans, sort, opts = nil)
     eng.app do
       eng.clear { para dict.getWords }
     end
     trans.app do
       trans.clear { para dict.getTranslations }
+    end
+    #sort.clear { para "Sd" }
+    sort.app do
+      sort.clear { para "Sort by #{dict.language}" }
     end
     # Clear out the edit_lines
     if opts

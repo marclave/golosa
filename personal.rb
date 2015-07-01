@@ -17,25 +17,26 @@ Shoes.app :width => 1200, :height => 640, :resizable => false, :title => "Golosa
     @word = para (link("Word").click do
       soraka.changeType(@word, [@verb,@colloquial])
       dict.mode = "Word"
-      soraka.reload(dict, @wordStack, @translationStack)
+      soraka.reload(dict, @wordStack, @translationStack, @sortLangauge)
     end)
     @word.emphasis = "oblique"
 
     @verb = para (link("Verb").click do
       soraka.changeType(@verb, [@word,@colloquial])
       dict.mode = "Verb"
-      soraka.reload(dict, @wordStack, @translationStack)
+      soraka.reload(dict, @wordStack, @translationStack, @sortLangauge)
     end)
 
     @colloquial = para (link("Colloquial").click do
       soraka.changeType(@colloquial, [@word,@verb])
       dict.mode = "Colloquial"
-      soraka.reload(dict, @wordStack, @translationStack)
+      soraka.reload(dict, @wordStack, @translationStack, @sortLangauge)
     end)
 
     # Sorts by language
-    flow { @sort = check; para "Sort by #{dict.language}" }
-    @sort.click { |x| dict.toggleSort; soraka.reload(dict, @wordStack, @translationStack)}
+    # TODO put this on one line!
+    flow { @sort = check; @sortLangauge = stack { para "Sort by #{dict.language}" } }
+    @sort.click { |x| dict.toggleSort; soraka.reload(dict, @wordStack, @translationStack, @sortLangauge)}
 
     @languages = stack :displace_top => 370 do
       tongues = list_box items: dict.languages + "New...".split
@@ -47,7 +48,7 @@ Shoes.app :width => 1200, :height => 640, :resizable => false, :title => "Golosa
           @title.text = dict.language
           tongues.items = dict.languages + "New...".split
           tongues.choose(@title.text)
-          soraka.reload(dict, @wordStack, @translationStack, [newLang])
+          soraka.reload(dict, @wordStack, @translationStack, @sortLangauge, [newLang])
         end
       end
       tongues.change do |lang|
@@ -55,7 +56,7 @@ Shoes.app :width => 1200, :height => 640, :resizable => false, :title => "Golosa
           @languageField.show
         elsif lang.text != dict.language
           dict.language = lang.text
-          soraka.reload(dict, @wordStack, @translationStack)
+          soraka.reload(dict, @wordStack, @translationStack, @sortLangauge)
           @title.text = dict.language
           @languageField.hide
         else
@@ -84,12 +85,12 @@ Shoes.app :width => 1200, :height => 640, :resizable => false, :title => "Golosa
       button "Add", :displace_left => 120 do
         if (!translation.text.empty? && !english.text.empty?)
           dict.addEntry(translation.text, english.text)
-          soraka.reload(dict, @wordStack, @translationStack, [translation, english])
+          soraka.reload(dict, @wordStack, @translationStack, @sortLangauge, [translation, english])
         end
       end
       button "Delete", :displace_left => 120 do
         dict.deleteEntry(translation.text)
-        soraka.reload(dict, @wordStack, @translationStack, [translation, english])
+        soraka.reload(dict, @wordStack, @translationStack, @sortLangauge, [translation, english])
       end
     end
   end
