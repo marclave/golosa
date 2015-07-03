@@ -5,7 +5,6 @@ require 'src/soraka'
 require 'src/entry'
 
 Shoes.app :width => 1200, :height => 640, :resizable => false, :title => "Golosa" do
-
   dict = Dictionary.new
   soraka = Soraka.new
 
@@ -77,8 +76,7 @@ Shoes.app :width => 1200, :height => 640, :resizable => false, :title => "Golosa
   end
 
   # Add/Delete entries
-  @addWord = stack :width => "25%" do
-    #border black
+  @addWord = stack :width => "25%", :displace_top => 10 do
     translation = edit_line :displace_left => 90
     english = edit_line :displace_left => 90, :displace_top => 5
     flow :displace_top => 8 do
@@ -96,7 +94,7 @@ Shoes.app :width => 1200, :height => 640, :resizable => false, :title => "Golosa
   end
 
   # This is kind of ugly
-  @legend = stack :width => "5%" do
+  @legend = stack :width => "5%", :displace_top => 10 do
     para "english"
     para "translation"
   end
