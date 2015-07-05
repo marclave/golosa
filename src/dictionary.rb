@@ -42,14 +42,13 @@ class Dictionary
     @mode = Type.new(newMode, self, @path)
   end
 
-  # keys is actually never changed
   def getWords
     words = @mode.getList.keys
     if !@sortByEng
       words = []
       rus = getTranslations
       match = @mode.getList
-      # for each russian word, get coresponding english
+      # for each russian word, get corresponding english
       rus.each { |r| words.push(match.key(r)) }
     end
     words.map { |x| "#{x}\n"}
