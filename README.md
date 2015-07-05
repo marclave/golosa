@@ -42,7 +42,7 @@ These instructions are super sketchy until I figure out a better way to do this.
 
 ** To find your home path, open the Command Prompt and enter
 
-              echo %HOMEPATH%
+        echo %HOMEPATH%
 
 It should be something like "C:/Users/Curtis"
 
