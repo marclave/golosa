@@ -4,41 +4,15 @@ require 'src/dictionary'
 require 'src/soraka'
 require 'src/entry'
 
-Shoes.app :width => 1200, :height => 640, :resizable => false, :title => "Golosa" do
+Shoes.app :width => 1200, :height => 700, :resizable => false, :title => "Golosa" do
+  background white
   dict = Dictionary.new
   soraka = Soraka.new
 
-  # Displays title, different modes, and languages
-  @leftPanel = stack :margin => 8, :width => "33%" do
-    @title = title(dict.language)
+  @header = flow do
+    border black
 
-    # Word is the default type
-    @word = para (link("Word").click do
-      soraka.changeType(@word, [@verb,@colloquial])
-      dict.mode = "Word"
-      soraka.reload(dict, @wordStack, @translationStack)
-    end)
-    @word.emphasis = "oblique"
-
-    @verb = para (link("Verb").click do
-      soraka.changeType(@verb, [@word,@colloquial])
-      dict.mode = "Verb"
-      soraka.reload(dict, @wordStack, @translationStack)
-    end)
-
-    @colloquial = para (link("Colloquial").click do
-      soraka.changeType(@colloquial, [@word,@verb])
-      dict.mode = "Colloquial"
-      soraka.reload(dict, @wordStack, @translationStack)
-    end)
-
-    # Sort by language
-    flow do
-      @sortLanguage = flow { @sort = check; para "Sort by #{dict.language}" }
-      @sort.click { |x| dict.toggleSort; soraka.reload(dict, @wordStack, @translationStack) }
-    end
-
-    @languages = stack :displace_top => 370 do
+    @languages = stack :displace_top => 35, :displace_left => 50 do
       tongues = list_box items: dict.languages + "New...".split
       tongues.choose(dict.language)
       @languageField = flow do
@@ -68,10 +42,47 @@ Shoes.app :width => 1200, :height => 640, :resizable => false, :title => "Golosa
         end
       end
     end
+
+    @title = title "Golosa"
+    @title.align = "center"
+    @title.displace_top = -10
+
+  end
+
+  # Displays title, different modes, and languages
+  @leftPanel = stack :margin => 8, :width => "33%" do
+    @title = title(dict.language)
+
+    # Word is the default type
+    # Change so that the other two types are changed in soraka
+    @word = para (link("Word").click do
+      soraka.changeType(@word, [@verb,@colloquial])
+      dict.mode = "Word"
+      soraka.reload(dict, @wordStack, @translationStack)
+    end)
+    @word.emphasis = "oblique"
+
+    @verb = para (link("Verb").click do
+      soraka.changeType(@verb, [@word,@colloquial])
+      dict.mode = "Verb"
+      soraka.reload(dict, @wordStack, @translationStack)
+    end)
+
+    @colloquial = para (link("Colloquial").click do
+      soraka.changeType(@colloquial, [@word,@verb])
+      dict.mode = "Colloquial"
+      soraka.reload(dict, @wordStack, @translationStack)
+    end)
+
+    # Sort by language
+    flow do
+      @sortLanguage = flow { @sort = check; para "Sort by #{dict.language}" }
+      @sort.click { |x| dict.toggleSort; soraka.reload(dict, @wordStack, @translationStack) }
+    end
   end
 
   # List of all the entries
-  flow :width => "33%", :height => "100%", :scroll => true do
+  flow :width => "33%", :height => "85%", :scroll => true do
     @wordStack = stack :width => "50%" do
       para dict.getWords
     end
