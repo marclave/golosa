@@ -10,14 +10,14 @@ class Dictionary
   attr_reader :languages
   attr_reader :sortedLang
 
-  @@configPath = Dir.home + "/Golosa/config.yml"
+  # Dir.pwd is needed
+  @@configPath = Dir.pwd + "\\GolosaData\\config.yml"
 
   # Default mode is "Word"
   def initialize
-    @path = File.open(@@configPath) { |f| YAML.load(f)['path'] }
     @languages = File.open(@@configPath) { |f| YAML.load(f)['languages'] }
     @language = languages[0]
-    @mode = Type.new("Word", self, @path)
+    @mode = Type.new("Word", self)
     @sortByEng = true
   end
 
@@ -27,19 +27,19 @@ class Dictionary
 
   def language=(newLang)
     @language = newLang
-    @mode = Type.new(@mode.type, self, @path)
+    @mode = Type.new(@mode.type, self)
   end
 
   # Also changes the dictionary language
   def addLanguage(newLang)
     File.open(@@configPath, "w") do |f|
-      f.write({"languages" => @languages.push(newLang), "path" => @path}.to_json)
+      f.write({"languages" => @languages.push(newLang)}.to_json)
     end
     @language = newLang
   end
 
   def mode=(newMode)
-    @mode = Type.new(newMode, self, @path)
+    @mode = Type.new(newMode, self)
   end
 
   def getWords

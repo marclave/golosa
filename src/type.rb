@@ -1,10 +1,10 @@
 class Type
   attr_reader :type
 
-  def initialize(mode, dictionary, path)
+  def initialize(mode, dictionary)
     @type = mode
     @dictionary = dictionary
-    @path = path
+    @path = Dir.pwd + "\\GolosaData"
     # Should I make this is a constant? There are too many strings...
     @modes = {"Word" => "words.txt", "Verb" => "verbs.txt",
       "Colloquial" => "colloquials.txt", "Note" => "notes.txt"}
@@ -17,6 +17,9 @@ class Type
 
   # Returns a hash, easier to split up into columns
   def getList
+    # If there are no languages don't try to load anything
+    #if dictionary.language == nil then return end
+
     entries = {}
     if @hasFile
       File.foreach(@filename).sort

@@ -13,7 +13,7 @@ Shoes.app :width => 1200, :height => 700, :resizable => false, :title => "Golosa
     border black
 
     @languages = stack :displace_top => 35, :displace_left => 50 do
-      tongues = list_box items: dict.languages + "New...".split
+      tongues = list_box items: dict.languages.sort + "New...".split
       tongues.choose(dict.language)
       @languageField = flow do
         newLang = edit_line text: "Enter a new language"
