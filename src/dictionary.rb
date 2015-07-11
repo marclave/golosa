@@ -15,10 +15,25 @@ class Dictionary
 
   # Default mode is "Word"
   def initialize
+    # Don't use the \\ here!
+    if !Dir.exists? "GolosaData"
+      createData
+    end
     @languages = File.open(@@configPath) { |f| YAML.load(f)['languages'] }
-    @language = languages[0]
+    if @languages.empty?
+      # No language
+      @language = ""
+    else
+      @language = @languages[0]
+    end
     @mode = Type.new("Word", self)
     @sortByEng = true
+  end
+
+  # Creates the config file if it does not exist
+  def createData
+    Dir.mkdir "GolosaData"
+    File.open(Dir.pwd + "\\GolosaData\\config.yml", "w") { |f| f.write({"languages" => []}.to_json) }
   end
 
   def toggleSort
@@ -43,6 +58,9 @@ class Dictionary
   end
 
   def getWords
+    # Might be useless
+    if @language == "" then return end
+
     words = @mode.getList.keys
     if !@sortByEng
       words = []
@@ -55,6 +73,9 @@ class Dictionary
   end
 
   def getTranslations
+    # Might be useless
+    if @language == "" then return end
+
     !@sortByEng ? @mode.getList.values.sort : @mode.getList.values
   end
 

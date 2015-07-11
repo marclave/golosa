@@ -13,24 +13,31 @@ Shoes.app :width => 1200, :height => 700, :resizable => false, :title => "Golosa
     border black
 
     @languages = stack :displace_top => 35, :displace_left => 50 do
-      tongues = list_box items: dict.languages.sort + "New...".split
-      tongues.choose(dict.language)
+      if dict.language == ""
+        tongues = list_box items: "New...".split
+        tongues.choose("New...")
+      else
+        tongues = list_box items: dict.languages.sort + "New...".split
+        tongues.choose(dict.language)
+      end
       @languageField = flow do
         newLang = edit_line text: "Enter a new language"
         button 'Create' do
           dict.addLanguage(newLang.text)
           @title.text = dict.language
           tongues.items = dict.languages + "New...".split
+          @languageField.hide
           tongues.choose(@title.text)
           soraka.reload(dict, @wordStack, @translationStack, [newLang])
         end
       end
+
       tongues.change do |lang|
         if lang.text == "New..."
           @languageField.show
         elsif lang.text != dict.language
           dict.language = lang.text
-          @title.text = dict.language
+          @title.text = lang.text
           @languageField.hide
           # Change the sort by language
           if @sort.checked then dict.toggleSort end

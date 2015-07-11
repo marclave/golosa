@@ -18,8 +18,8 @@ class Type
   # Returns a hash, easier to split up into columns
   def getList
     # If there are no languages don't try to load anything
-    #if dictionary.language == nil then return end
-
+    #if @dictionary.language.nil? then return end
+    if @dictionary.language == "" then return end
     entries = {}
     if @hasFile
       File.foreach(@filename).sort
