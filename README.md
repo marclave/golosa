@@ -14,36 +14,23 @@ Golosa is a Ruby [Shoes](http://shoesrb.com/) application, designed for language
         > shoes personal.rb
 
 #### If Shoes and Rake are not installed
-These instructions are super sketchy until I figure out a better way to do this...
 
 1. Download the [v1.0.0 release of Golosa](https://github.com/swcraig/golosa/releases/tag/v1.0.0) (only Golosa.exe and config.yml, not the Source code)
 
-2. In your home directory create a folder named "Golosa" and put config.yml in it **
+2.  Place Golosa.exe in the directory of your choosing.  A folder will be created in this directory when Golosa is run for the first time; you should want all Golosa data to live in this directory from now on!
 
-3. Using a text editor, edit the line in config.yml to your preference (Include the " marks <strong>exactly</strong> where they are shown!)
-
-  For example if my home directory was C:/Users/Cole and I wanted to set the dictionary up for German my config.yml would look <strong>exactly</strong> like
-
-        {"languages":["german"],"path":"C:/Users/Cole/Golosa"}
-
-  Or, if my home directory was C:/Users/Teddy and I wanted to set the dictionary up for Russian and Afrikaans my config.yml would look <strong>exactly</strong> like
-
-        {"languages":["russian", "afrikaans"],"path":"C:/Users/Teddy/Golosa"}
-
-4. Run Golosa.exe
+3. Run Golosa.exe
 
   Shoes is included in this executable and will start to download.  If the download stops indefinitely, all is well, click "cancel" and run Golosa.exe again. Golosa will start without any issue.
 
-5. Start to use Golosa daily and become a polyglot
+4. Start to use Golosa daily and become a polyglot
 
 <sub>Installation instructions were tested on Windows 7</sub>  
 
-<br>
-
-** To find your home path, open the Command Prompt and enter
-
-        echo %HOMEPATH%
-
-It should be something like "C:/Users/Curtis"
+#### V2 Updates
+* GUI overhaul!
+* No need to provide home directory, everything is setup relative to where .exe is placed
+* Alphabetical sorting of languages
+* Ability to delete languages from GUI
 
 <sub>Development was done with Shoes 3.2.21</sub>

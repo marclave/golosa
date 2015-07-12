@@ -21,14 +21,26 @@ Shoes.app :width => 1200, :height => 700, :resizable => false, :title => "Golosa
         tongues.choose(dict.language)
       end
       @languageField = flow do
-        newLang = edit_line text: "Enter a new language"
-        button 'Create' do
-          dict.addLanguage(newLang.text)
-          @title.text = dict.language
-          tongues.items = dict.languages + "New...".split
+        newLang = edit_line "Enter a new language"
+        button "Create/Delete" do
+          # TODO add warning message
+          if dict.languages.include? newLang.text
+            # If we are deleting the language we are viewing
+            if dict.language == newLang.text
+              dict.language = dict.languages[0]
+            end
+            dict.deleteLanguage(newLang.text)
+          else
+            dict.addLanguage(newLang.text)
+          end
           @languageField.hide
+          @title.text = dict.language
+          tongues.items = dict.languages.sort + "New...".split
           tongues.choose(@title.text)
-          soraka.reload(dict, @wordStack, @translationStack, [newLang])
+          if dict.languages.length > 0
+            soraka.reload(dict, @wordStack, @translationStack, [newLang])
+          end
+          newLang.text = "Enter a new language"
         end
       end
 
@@ -137,3 +149,4 @@ end
 
 # CODE SMELLS
 # => init in type (@path)
+# => Return array in getList or in getWords and getTranslations?

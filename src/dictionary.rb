@@ -53,14 +53,31 @@ class Dictionary
     @language = newLang
   end
 
+  # Deletes the language
+  # Something is wrong!
+  def deleteLanguage(language)
+      File.open(@@configPath, "w") do |f|
+        @languages.delete(language)
+        if @languages.length > 0
+          f.write({"languages" => @languages}.to_json); @language = @languages[0]
+        else
+          f.write({"languages" => []}.to_json); @language = ""
+        end
+      end
+      # Delete all associated text files
+      # PERMISSION WILL BE DENIED IF THEY HAVE THE LIST OPEN!
+      Dir.glob("GolosaData/#{language}*.txt").each do |f|
+        File.delete(f)
+      end
+  end
+
   def mode=(newMode)
     @mode = Type.new(newMode, self)
   end
 
   def getWords
-    # Might be useless
-    if @language == "" then return end
-
+    # Return array so the rest doesn't explode!
+    if @language == "" then return [] end
     words = @mode.getList.keys
     if !@sortByEng
       words = []
@@ -74,7 +91,7 @@ class Dictionary
 
   def getTranslations
     # Might be useless
-    if @language == "" then return end
+    if @language == "" then return [] end
 
     !@sortByEng ? @mode.getList.values.sort : @mode.getList.values
   end
