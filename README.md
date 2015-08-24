@@ -16,7 +16,6 @@ To use the most recent code, follow the first set of instructions
         > shoes personal.rb
 
 #### If Shoes and Rake are not installed
-These instructions are super sketchy until I figure out a better way to do this...
 
 1. Download the [v1.0.0 release of Golosa](https://github.com/swcraig/golosa/releases/tag/v1.0.0) (only Golosa.exe and config.yml, not the Source code)
 
